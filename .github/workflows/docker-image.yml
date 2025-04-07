@@ -9,11 +9,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Free up disk space before checkout
-        run: |
-          sudo rm -rf /usr/local/lib/android /opt/ghc
-          docker system prune -af
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -32,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-image-name:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository_name || github.event.repository.name }}:latest
 
       - name: Send success notification
         if: success()
